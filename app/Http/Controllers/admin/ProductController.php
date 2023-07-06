@@ -19,7 +19,7 @@ class ProductController extends Controller
         {
             $query = $query->where('title', 'like', "%{$title}%");
         }
-        return view('admin.products.index',['products'=>$query->paginate(4),'input' => $request->validated() ]);
+        return view('admin.products.index',['products'=>$query->paginate(10),'input' => $request->validated() ]);
     }
     public function create(){
         $product = new Product();
@@ -46,7 +46,7 @@ class ProductController extends Controller
     }
     public function destroy(Product $product){
         $product->delete();
-        return to_route('admin.product.edit')->with('success','Le produit a été supprimée avec success');
+        return to_route('admin.product.index')->with('success','Le produit a été supprimée avec success');
     }
     private function extractData(Product $product,ProduitFormRequest $request):array
     {
