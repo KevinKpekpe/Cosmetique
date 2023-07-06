@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
 
 /*
@@ -37,6 +38,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth.admin', 'admin'])->gro
     Route::resource('category', CategoryController::class)->except(['show']);
 });
 // client routes
+
+Route::get('/login',[AuthController::class, 'login'])->name('login');
+Route::post('/login',[AuthController::class, 'doLogin'])->name('doLogin');
+Route::get('/signup',[AuthController::class, 'signup'])->name('signup');
+Route::post('/signup',[AuthController::class, 'doSignup'])->name('doSignup');
+Route::delete('/logout',[AuthController::class, 'logout'])->name('logout');
 
 Route::get('/',[ClientController::class, 'index'])->name('welcome');
 Route::get('/products',[ClientController::class, 'all'])->name('products');

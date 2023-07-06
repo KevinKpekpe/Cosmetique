@@ -24,10 +24,23 @@
                             <a href="{{route('products')}}" class="item">Produits</a>
                             <a href="{{route('contact')}}" class="item">Contact</a>
                             <div class="right menu">
-                                <a href="#" class="item">Se connecter</a>
-                                <a href="#" class="item">
+                                @auth
+                                <span class="item">{{Auth::user()->name}}</span>
+                                <div class="item">
+                                    <form class="ui form" action="{{route('logout')}}" method="post">
+                                        @method("delete")
+                                        @csrf
+                                        <button class="ui button red">Logout</button>
+                                    </form>
+                                </div>
+
+                                @endauth
+                                @guest
+                                <a href="{{route('login')}}" class="item">Se connecter</a>
+                                <a href="{{route('signup')}}" class="item">
                                     <div class="ui primary button">S'inscrire</div>
                                 </a>
+                                @endguest
                                 <a href="{{route('cart.index')}}" class="item">
                                     <div class="ui primary button">Panier {{Cart::count()}}</div>
                                 </a>

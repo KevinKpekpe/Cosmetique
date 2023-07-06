@@ -44,7 +44,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="3"><strong>Total de la commande</strong></td>
-                                <td><strong>40,00 €</strong></td>
+                                <td><strong>{{Cart::subtotal()}} €</strong></td>
                                 <td></td>
                             </tr>
                         </tbody>
