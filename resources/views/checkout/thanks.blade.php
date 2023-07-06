@@ -11,6 +11,15 @@
 
 <body>
     <div class="ui container">
+        @if (session('success'))
+            <div class="ui positive message">
+                <i class="close icon"></i>
+                <div class="header">
+                    Success
+                </div>
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
         <h1 class="ui header">Merci d'avoir effectué votre achat chez nous</h1>
     </div>
 

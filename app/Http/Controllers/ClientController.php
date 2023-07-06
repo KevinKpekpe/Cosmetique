@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -12,6 +13,9 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class ClientController extends Controller
 {
     public function index(){
+
+    //     $order = Order::find(2);
+    //    dd( unserialize($order->products));
        // dd(Cart::content());
         return view('clients.index',['products'=>Product::paginate(3)]);
     }

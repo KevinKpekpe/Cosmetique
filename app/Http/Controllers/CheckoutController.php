@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use DateTime;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
@@ -15,16 +19,16 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        if(Cart::count()<= 0){
+        if (Cart::count() <= 0) {
             return redirect()->route('products');
         }
         Stripe::setApiKey('sk_test_51NAJv7Igps0lluGj1k7DT8xScXCKszqOHKTULMGyTa2LjesubRIwU7slZUiiy2oZ8I0GB2hDZfpCIMauM69QUpvY00JkIBkiL1');
         $intent = PaymentIntent::create([
-            'amount' =>round(Cart::total()) * 100,
-            'currency' =>'USD',
+            'amount' => round(Cart::total()) * 100,
+            'currency' => 'USD',
         ]);
         $clientSecret =  Arr::get($intent, 'client_secret');
-        return view('checkout.index',['clientSecret' =>$clientSecret]);
+        return view('checkout.index', ['clientSecret' => $clientSecret]);
     }
 
     /**
@@ -40,10 +44,45 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        Cart::destroy();
+
+
         $data = $request->json()->all();
 
-        return $data['paymentIntent'];
+        $order = new Order();
+
+        $order->payment_intent_id = $data['paymentIntent']['id'];
+        $order->amount = $data['paymentIntent']['amount'];
+
+        $order->payment_created_at = (new DateTime())
+            ->setTimestamp($data['paymentIntent']['created'])
+            ->format('Y-m-d H:i:s');
+
+        $products = [];
+        $i = 0;
+
+        foreach (Cart::content() as $product) {
+            $products['product_' . $i][] = $product->model->title;
+            $products['product_' . $i][] = $product->model->price;
+            $products['product_' . $i][] = $product->qty;
+            $i++;
+        }
+
+        $order->products = serialize($products);
+        $order->user_id = Auth::user()->id;
+        $order->save();
+
+        if ($data['paymentIntent']['status'] === 'succeeded') {
+            Session::flash('success', 'Paiement réalisé avec succès!');
+            return response()->json(['success' => 'Paiement Intent succeeded']);
+            Cart::destroy();
+            Session::flash('success', 'Votre commande a été traitée avec succès.');
+            return response()->json(['success' => 'Payment Intent Succeeded']);
+        } else {
+            return response()->json(['error' => 'Payment Intent Not Succeeded']);
+        }
+    }
+    public function thankyou(){
+        return Session::has('success') ? view('checkout.thanks') : redirect()->route('products');
     }
 
     /**
