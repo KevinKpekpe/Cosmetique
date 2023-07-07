@@ -106,7 +106,7 @@
                             // form.reset();
                             window.location.href = redirect;
                         }).catch((error) => {
-                            console.log(error)
+                            alert(error)
                         })
 
                     }

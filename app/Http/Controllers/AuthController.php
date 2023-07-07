@@ -23,7 +23,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return redirect()->intended(route('welcome'));
         }
-        return to_route('auth.login')->withErrors(['email'=>'invalid email'])->onlyInput('email');
+        return to_route('login')->withErrors(['email'=>'invalid email'])->onlyInput('email');
     }
     public function signup(){
         return view('clients.signup');

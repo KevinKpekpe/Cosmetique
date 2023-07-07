@@ -72,9 +72,9 @@ class CheckoutController extends Controller
         $order->save();
 
         if ($data['paymentIntent']['status'] === 'succeeded') {
+            Cart::destroy();
             Session::flash('success', 'Paiement réalisé avec succès!');
             return response()->json(['success' => 'Paiement Intent succeeded']);
-            Cart::destroy();
             Session::flash('success', 'Votre commande a été traitée avec succès.');
             return response()->json(['success' => 'Payment Intent Succeeded']);
         } else {

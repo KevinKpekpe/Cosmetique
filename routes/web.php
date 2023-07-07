@@ -56,7 +56,8 @@ Route::get('/cart', [CartController::class,'index'])->name('cart.index');
 Route::post('/cart', [CartController::class,'store'])->name('cart.store');
 Route::delete('/cart/{rowId}', [CartController::class,'destroy'])->name('cart.destroy');
 // checkout routes
-Route::get('/checkout',[CheckoutController::class,'index'])->name('checkout.index');
-Route::post('/checkout',[CheckoutController::class,'store'])->name('checkout.store');
+Route::get('/checkout',[CheckoutController::class,'index'])->name('checkout.index')->middleware('auth');
+Route::post('/checkout',[CheckoutController::class,'store'])->name('checkout.store')->middleware('auth');
 Route::get('/merci',[CheckoutController::class,'thankyou'])->name('checkout.thankyou');
 
+Route::patch('/cart/{rowId}',[CartController::class,'update'])->name('checkout.update');

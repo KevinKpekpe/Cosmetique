@@ -1,4 +1,7 @@
 @extends('clients.base')
+@section('extra-meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
 @section('content')
 
     <main>
@@ -27,14 +30,20 @@
                                     <td>{{ $product->model->price }}€</td>
                                     <td>
                                         <form action="" class="ui form">
-                                            <input type="number" min="1" value="1">
+                                            <select name="qty" id="qty" data-id="{{ $product->rowId }}">
+                                                @for ($i = 1; $i <= 6; $i++)
+                                                <option value="{{ $i }}" {{ $product->qty == $i ? 'selected' : ''}}>
+                                                    {{ $i }}
+                                                </option>
+                                                @endfor
+                                            </select>
                                         </form>
                                     </td>
-                                    <td>30,00 €</td>
+                                    <td>{{ $product->subtotal() }}€</td>
                                     <td>
-                                        <form action="{{route('cart.destroy',$product->rowId)}}" method="POST">
+                                        <form action="{{ route('cart.destroy', $product->rowId) }}" method="POST">
                                             @csrf
-                                            @method("DELETE")
+                                            @method('DELETE')
                                             <button type="submit" class="ui icon button">
                                                 <i class="close icon"></i>
                                             </button>
@@ -44,7 +53,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="3"><strong>Total de la commande</strong></td>
-                                <td><strong>{{Cart::subtotal()}} €</strong></td>
+                                <td><strong>{{ Cart::subtotal() }} €</strong></td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -66,7 +75,7 @@
                                 <tbody>
                                     <tr>
                                         <td>Sous-total</td>
-                                        <td>{{Cart::subtotal()}} €</td>
+                                        <td>{{ Cart::subtotal() }} €</td>
                                     </tr>
                                     <tr>
                                         <td>Livraison</td>
@@ -74,15 +83,16 @@
                                     </tr>
                                     <tr>
                                         <td>Taxe</td>
-                                        <td>{{Cart::tax()}}€</td>
+                                        <td>{{ Cart::tax() }}€</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Total</strong></td>
-                                        <td><strong>{{Cart::total()}}€</strong></td>
+                                        <td><strong>{{ Cart::total() }}€</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <a href="{{route('checkout.index')}}" class="ui button primary checkout-button">Passer à la caisse</a>
+                            <a href="{{ route('checkout.index') }}" class="ui button primary checkout-button">Passer à la
+                                caisse</a>
                         </div>
                     </div>
                 </div>
@@ -92,4 +102,33 @@
         </div>
     </main>
 
+@endsection
+
+@section('extra-js')
+    <script>
+        var qty = document.querySelectorAll('#qty');
+        Array.from(qty).forEach((element) => {
+            element.addEventListener('change', function() {
+                var rowId = element.getAttribute('data-id');
+                var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                fetch(`/cart/${rowId}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json, text-plain, */*",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-TOKEN": token
+                    },
+                    method: 'patch',
+                    body: JSON.stringify({
+                        qty: this.value
+                    })
+                }).then((data) => {
+                    console.log(data);
+                    location.reload();
+                }).catch((error) => {
+                    console.log(error);
+                });
+            });
+        });
+    </script>
 @endsection

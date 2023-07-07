@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     @yield('extra-meta')
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-	<link rel="stylesheet" href="style.css">
     @yield('extra-script')
 </head>
 <body>
@@ -58,5 +57,10 @@
         Success
     </div>
     <p>{{ session('success') }}</p>
+</div>
+@endif
+@if (session('error'))
+<div class="ui negative message">
+    {{ session('error') }}
 </div>
 @endif

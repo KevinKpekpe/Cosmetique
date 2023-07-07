@@ -10,8 +10,11 @@
                 @csrf
                 <div class="field">
                     <label>Email</label>
-                    <input type="email" name="email" placeholder="Email">
+                    <input type="email" name="email" placeholder="Email" value="{{old('email')}}">
                 </div>
+                @error('email')
+                <div class="ui pointing red basic label">{{ $message }}</div>
+                @enderror
                 <div class="field">
                     <label>Mot de passe</label>
                     <input type="password" name="password" placeholder="Mot de passe">

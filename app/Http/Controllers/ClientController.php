@@ -14,8 +14,8 @@ class ClientController extends Controller
 {
     public function index(){
 
-    //     $order = Order::find(2);
-    //    dd( unserialize($order->products));
+        // $order = Order::find(5);
+        // dd( unserialize($order->products));
        // dd(Cart::content());
         return view('clients.index',['products'=>Product::paginate(3)]);
     }
