@@ -59,5 +59,5 @@ Route::delete('/cart/{rowId}', [CartController::class,'destroy'])->name('cart.de
 Route::get('/checkout',[CheckoutController::class,'index'])->name('checkout.index')->middleware('auth');
 Route::post('/checkout',[CheckoutController::class,'store'])->name('checkout.store')->middleware('auth');
 Route::get('/merci',[CheckoutController::class,'thankyou'])->name('checkout.thankyou');
-
+Route::get('/profile',[ClientController::class,'profile'])->name('client.profile')->middleware('auth');
 Route::patch('/cart/{rowId}',[CartController::class,'update'])->name('checkout.update');

@@ -49,6 +49,11 @@
                         <div class="ui card">
                             <div class="image">
                                 <img src="/storage/{{$product->image}}" alt="Produit cosmétique">
+                                @if ($product->stock > 0)
+                                <span class="ui green label" style="position:absolute; top:0; right:0;">In Stock</span>
+                                @else
+                                <span class="ui ROD label" style="position:absolute; top:0; right:0;">Out of Stock</span>
+                                @endif
                             </div>
                             <div class="content">
                                 <a href="{{route('product.show',['product'=> $product->id])}}" class="header">{{$product->title}}</a>
@@ -61,13 +66,14 @@
                             </div>
                             <div class="extra content">
                                 <div class="ui two buttons">
+                                    @if ($product->stock > 0)
                                     <form class="ui form" action="{{route('cart.store')}}" method="post">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{$product->id}}">
-                                        <div class="ui buttons">
-                                            <button type="submit" class="ui  black button">Ajouter au Panier </button>
-                                        </div>
+                                        <button type="submit" class="ui black button">Ajouter au Panier</button>
                                     </form>
+                                    <div class="or"></div>
+                                    @endif
                                     <a href="{{route('product.show',['product'=> $product->id])}}" class="ui basic blue button">Détails</a>
                                 </div>
                             </div>

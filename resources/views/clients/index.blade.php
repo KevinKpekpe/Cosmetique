@@ -23,6 +23,7 @@
                     <div class="ui card">
                         <div class="image">
                             <img src="/storage/{{$product->image}}" alt="Produit cosmétique">
+                            <span class="ui green label" style="position:absolute; top:0; right:0;">In Stock</span>
                         </div>
                         <div class="content">
                             <a href="#" class="header">{{$product->title}}</a>

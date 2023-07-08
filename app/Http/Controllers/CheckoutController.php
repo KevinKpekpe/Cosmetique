@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use DateTime;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -72,6 +73,7 @@ class CheckoutController extends Controller
         $order->save();
 
         if ($data['paymentIntent']['status'] === 'succeeded') {
+            $this->updatestock();
             Cart::destroy();
             Session::flash('success', 'Paiement réalisé avec succès!');
             return response()->json(['success' => 'Paiement Intent succeeded']);
@@ -84,7 +86,12 @@ class CheckoutController extends Controller
     public function thankyou(){
         return Session::has('success') ? view('checkout.thanks') : redirect()->route('products');
     }
-
+    private function updatestock(){
+        foreach (Cart::content() as $item){
+            $product = Product::find($item->model->id);
+            $product->update(['stock' => $product->stock - $item->qty]);
+        }
+    }
     /**
      * Display the specified resource.
      */

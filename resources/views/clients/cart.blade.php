@@ -30,7 +30,7 @@
                                     <td>{{ $product->model->price }}€</td>
                                     <td>
                                         <form action="" class="ui form">
-                                            <select name="qty" id="qty" data-id="{{ $product->rowId }}">
+                                            <select name="qty" id="qty" data-id="{{ $product->rowId }}" data-stock ="{{$product->model->stock}}">
                                                 @for ($i = 1; $i <= 6; $i++)
                                                 <option value="{{ $i }}" {{ $product->qty == $i ? 'selected' : ''}}>
                                                     {{ $i }}
@@ -110,6 +110,7 @@
         Array.from(qty).forEach((element) => {
             element.addEventListener('change', function() {
                 var rowId = element.getAttribute('data-id');
+                var stock = element.getAttribute('data-stock');
                 var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 fetch(`/cart/${rowId}`, {
                     headers: {
@@ -120,7 +121,8 @@
                     },
                     method: 'patch',
                     body: JSON.stringify({
-                        qty: this.value
+                        qty: this.value,
+                        stock:stock
                     })
                 }).then((data) => {
                     console.log(data);

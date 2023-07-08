@@ -14,15 +14,15 @@ class ClientController extends Controller
 {
     public function index(){
 
-        // $order = Order::find(5);
+        // $order = Order::find(8);
         // dd( unserialize($order->products));
        // dd(Cart::content());
-        return view('clients.index',['products'=>Product::paginate(3)]);
+        return view('clients.index',['products'=>Product::inRandomOrder()->take(3)->get()]);
     }
     public function all(){
         $categories = Category::all();
         $brands = Brand::all();
-        return view('clients.products',['products'=>Product::paginate(6),'categories'=>$categories,'brands'=>$brands]);
+        return view('clients.products',['products'=>Product::paginate(12),'categories'=>$categories,'brands'=>$brands]);
     }
     public function show(Product $product){
         $products = Product::query()->where('id','!=',$product->id)->get();
@@ -33,5 +33,8 @@ class ClientController extends Controller
     }
     public function sendMessage(Request $request){
         dd($request->all());
+    }
+    public function profile(){
+        return view('clients.profil');
     }
 }
