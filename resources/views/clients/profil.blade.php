@@ -6,7 +6,7 @@
             <h2 class="ui header">Profil Utilisateur</h2>
             <div class="ui card">
                 <div class="image">
-                    <img src="https://via.placeholder.com/150" alt="Avatar">
+                    <img src="/storage/{{Auth::user()->avatar}}" alt="Avatar">
                 </div>
                 <div class="content">
                     <a class="header">{{Auth::user()->name}}</a>

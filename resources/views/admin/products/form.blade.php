@@ -69,6 +69,13 @@
             @enderror
         </div>
         <div class="field">
+            <label for="price">Stock</label>
+            <input type="number" id="stock" name="stock" placeholder="Quantité en Stock"  value="{{old('stock',$product->stock)}}">
+            @error('price')
+            <div class="ui pointing red basic label">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="field">
             <label for="active">Actif</label>
             <input type="hidden" value="0" name="active">
             <div class="ui toggle checkbox">

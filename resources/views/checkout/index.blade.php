@@ -8,25 +8,42 @@
 
 @section('content')
     <div class="ui container">
-        <h1>Page de paiement</h1>
-        <div class="ui grid">
-            <div class="sixteen wide mobile eight wide tablet six wide computer column">
-                <form action="{{ route('checkout.store') }}" method="POST" id="payment-form" class="ui form my-4">
-                    @csrf
-                    <div id="card-element" class="field">
-                        <!-- Elements will create input elements here -->
-                    </div>
-
-                    <!-- We'll put the error messages in this element -->
-                    <div id="card-errors" role="alert"></div>
-
-                    <button class="ui button primary mt-3" id="submit">
-                        Procéder au paiement({{Cart::total()}})
-                    </button>
-                </form>
+  <h1 class="ui header">
+    <i class="credit card outline icon"></i>
+    Paiement Sécurisé
+  </h1>
+  <div class="ui grid">
+    <div class="sixteen wide mobile eight wide tablet six wide computer column">
+      <form action="{{ route('checkout.store') }}" method="POST" id="payment-form" class="ui form my-4">
+        @csrf
+        <div class="ui segment">
+          <div class="field">
+            <label for="card-element">Informations de paiement</label>
+            <div id="card-element" class="field">
+                <!-- Elements will create input elements here -->
             </div>
+          </div>
+          <div id="card-errors" role="alert"></div>
         </div>
+        <button class="ui button primary mt-3" id="submit">
+          Payer {{Cart::total()}}
+        </button>
+        <div class="ui message">
+          <p>Nous ne stockons pas les informations de votre carte de crédit et traitons toutes les transactions de manière sécurisée.</p>
+          <p>Pour toute question ou assistance, contactez-nous à <a href="mailto:support@example.com">support@example.com</a>.</p>
+        </div>
+      </form>
     </div>
+    <div class="sixteen wide mobile eight wide tablet six wide computer column">
+      <div class="ui segment">
+        <h2 class="ui header">Comment ça marche ?</h2>
+        <p>Nous utilisons le système de paiement en ligne sécurisé Stripe qui prend en charge les principales cartes de crédit.</p>
+        <p>Remplissez simplement le formulaire de paiement ci-dessus et cliquez sur "Payer". Votre paiement sera traité immédiatement et vous recevrez une confirmation par e-mail.</p>
+        <p>Si vous avez des questions ou des problèmes, n'hésitez pas à nous contacter à <a href="mailto:support@example.com">support@example.com</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('extra-js')

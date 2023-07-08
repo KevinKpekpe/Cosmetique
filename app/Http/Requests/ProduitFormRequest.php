@@ -31,7 +31,8 @@ class ProduitFormRequest extends FormRequest
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'active'=> 'nullable|boolean'
+            'active'=> 'nullable|boolean',
+            'stock'=> 'numeric|min:1'
         ];
     }
 }
